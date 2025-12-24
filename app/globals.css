@@ -1,26 +1,338 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  
+  /* Gray Scale - Extended */
+  --color-gray-50: #f8fafc;
+  --color-gray-100: #f1f5f9;
+  --color-gray-200: #e2e8f0;
+  --color-gray-300: #cbd5e1;
+  --color-gray-400: #94a3b8;
+  --color-gray-500: #64748b;
+  --color-gray-600: #475569;
+  --color-gray-700: #334155;
+  --color-gray-800: #1e293b;
+  --color-gray-900: #0f172a;
+  
+  /* Primary Colors */
+  --color-primary: #0f4c45;
+  --color-primary-light: #14635a;
+  --color-primary-dark: #0a3a34;
+  --color-primary-foreground: #ffffff;
+  
+  /* Secondary Colors (Minimal usage) */
+  --color-secondary: #D4AF37;
+  --color-secondary-foreground: #000000;
+  
+  --color-muted: #f1f5f9;
+  --color-muted-foreground: #64748b;
+  
+  --color-accent: #f8fafc;
+  --color-accent-foreground: #0f172a;
+  
+  --color-card: #ffffff;
+  --color-card-foreground: #0f172a;
+  
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0f172a;
+  
+  --color-border: #e2e8f0;
+  --color-input: #e2e8f0;
+  --color-ring: #0f4c45;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  
+  --font-sans: var(--font-sans), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #0f172a;
+  }
+  
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-bold tracking-tight;
+  }
+  
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight;
+  }
+  
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl leading-tight;
+  }
+  
+  h3 {
+    @apply text-2xl md:text-3xl lg:text-4xl leading-snug;
+  }
+  
+  h4 {
+    @apply text-xl md:text-2xl leading-snug font-semibold;
+  }
+  
+  h5 {
+    @apply text-lg md:text-xl leading-normal font-semibold;
+  }
+  
+  h6 {
+    @apply text-base md:text-lg leading-normal font-semibold;
+  }
+  
+  p {
+    @apply text-base leading-relaxed;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer components {
+  /* Rich Text Content - Auto formatting */
+  .prose-content {
+    @apply text-gray-700 leading-relaxed;
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+  
+  /* Paragraphs with proper spacing */
+  .prose-content p {
+    @apply mb-6;
+    text-align: justify;
+    text-indent: 2rem;
+  }
+  
+  .prose-content p:first-of-type {
+    text-indent: 0;
+  }
+  
+  .prose-content p:last-child {
+    @apply mb-0;
+  }
+  
+  /* Headings */
+  .prose-content h2 {
+    @apply text-2xl font-bold text-slate-900 mt-10 mb-4;
+  }
+  
+  .prose-content h3 {
+    @apply text-xl font-bold text-slate-900 mt-8 mb-3;
+  }
+  
+  .prose-content h4 {
+    @apply text-lg font-semibold text-slate-900 mt-6 mb-2;
+  }
+  
+  /* Lists */
+  .prose-content ul {
+    @apply list-disc pl-8 mb-6 space-y-2;
+  }
+  
+  .prose-content ol {
+    @apply list-decimal pl-8 mb-6 space-y-2;
+  }
+  
+  .prose-content li {
+    @apply leading-relaxed;
+    text-indent: 0;
+  }
+  
+  .prose-content li p {
+    @apply mb-0;
+    text-indent: 0;
+  }
+  
+  /* Blockquote */
+  .prose-content blockquote {
+    @apply border-l-4 border-primary pl-6 py-2 my-6 italic text-gray-600 bg-gray-50 rounded-r-lg;
+  }
+  
+  .prose-content blockquote p {
+    @apply mb-0;
+    text-indent: 0;
+  }
+  
+  /* Links */
+  .prose-content a {
+    @apply text-primary font-medium underline decoration-primary/30 hover:decoration-primary transition-colors;
+  }
+  
+  /* Bold and Italic */
+  .prose-content strong {
+    @apply font-bold text-slate-900;
+  }
+  
+  .prose-content em {
+    @apply italic;
+  }
+  
+  /* Strikethrough and Underline */
+  .prose-content s,
+  .prose-content del {
+    @apply line-through text-gray-500;
+  }
+  
+  .prose-content u {
+    @apply underline;
+  }
+  
+  /* Code */
+  .prose-content code {
+    @apply bg-gray-100 text-primary px-2 py-1 rounded text-sm font-mono;
+  }
+  
+  .prose-content pre {
+    @apply bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto my-6;
+  }
+  
+  .prose-content pre code {
+    @apply bg-transparent text-inherit p-0;
+  }
+  
+  /* Images */
+  .prose-content img {
+    @apply rounded-xl shadow-lg my-8 mx-auto max-w-full h-auto;
+  }
+  
+  .prose-content figure {
+    @apply my-8;
+  }
+  
+  .prose-content figcaption {
+    @apply text-center text-sm text-gray-500 mt-3 italic;
+  }
+  
+  /* Horizontal Rule */
+  .prose-content hr {
+    @apply my-10 border-gray-200;
+  }
+  
+  /* Tables (if any) */
+  .prose-content table {
+    @apply w-full border-collapse my-6;
+  }
+  
+  .prose-content th {
+    @apply bg-gray-100 border border-gray-300 px-4 py-3 text-left font-semibold text-slate-900;
+  }
+  
+  .prose-content td {
+    @apply border border-gray-300 px-4 py-3;
+  }
+  
+  .prose-content tr:nth-child(even) {
+    @apply bg-gray-50;
+  }
+
+  /* Fix for Trix editor br tags - treat them as paragraph breaks */
+  .prose-content br {
+    display: block;
+    content: "";
+    margin-top: 1rem;
+  }
+
+  /* Handle div containers from rich editor */
+  .prose-content > div {
+    @apply mb-6;
+  }
+  
+  .prose-content > div:last-child {
+    @apply mb-0;
+  }
+}
+
+@layer utilities {
+  /* Section Spacing - Increased for bemfebui style */
+  .section-padding {
+    @apply py-20 md:py-28 lg:py-32;
+  }
+  
+  .section-gap {
+    @apply gap-12 md:gap-16 lg:gap-20;
+  }
+  
+  /* Card Spacing - Increased padding */
+  .card-padding {
+    @apply p-6 md:p-8;
+  }
+  
+  /* Shadow Utilities - Subtle & refined */
+  .shadow-card {
+    @apply shadow-sm hover:shadow-md transition-shadow duration-200;
+  }
+  
+  /* Focus Ring */
+  .focus-ring {
+    @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/20 focus-visible:ring-offset-2;
+  }
+  
+  /* Responsive Grid Utilities */
+  .grid-responsive-2 {
+    @apply grid grid-cols-1 sm:grid-cols-2;
+  }
+  
+  .grid-responsive-3 {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  
+  .grid-responsive-4 {
+    @apply grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4;
+  }
+  
+  /* Transition Utilities */
+  .transition-smooth {
+    @apply transition-all duration-200 ease-in-out;
+  }
+  
+  /* Navbar Specific Animations */
+  @keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  @keyframes shimmer {
+    100% { transform: translateX(100%); }
+  }
+  
+  .link-hover {
+    @apply transition-colors duration-200 hover:text-primary;
+  }
+  
+  /* Border Radius Utilities */
+  .rounded-card {
+    border-radius: var(--radius-lg);
+  }
+  
+  .rounded-button {
+    border-radius: var(--radius-md);
+  }
+  
+  .rounded-input {
+    border-radius: var(--radius-md);
+  }
+}
+
+/* Custom Cursor */
+@media (pointer: fine) {
+  body, 
+  a, 
+  button, 
+  input[type="button"], 
+  input[type="submit"],
+  .cursor-hover {
+    cursor: none !important;
+  }
 }
