@@ -1,5 +1,6 @@
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
+import { ScrollToTop } from "@/components/layout/scroll-to-top";
 import { cn } from "@/lib/utils";
 import { SITE, jsonLdOrganization, jsonLdWebsite } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -17,8 +18,8 @@ const siteUrl = SITE.url;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    template: `%s - ${SITE.name}`,
-    default: `${SITE.title} - ${SITE.name}`,
+    template: `%s | MAJAP Polindra`,
+    default: `MAJAP Polindra`,
   },
   description: SITE.description,
   keywords: SITE.keywords,
@@ -73,7 +74,8 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebsite()) }}
         />
-         <Navbar />
+         <ScrollToTop />
+          <Navbar />
           <main className="flex-grow">
             {children}
           </main>
