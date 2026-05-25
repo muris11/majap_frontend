@@ -22,11 +22,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: '*.vercel.app',
-      },
-      {
-        protocol: 'https',
-        hostname: process.env.NEXT_PUBLIC_IMAGE_HOSTNAME || 'localhost',
+        hostname: 'adminmajap.getmuris.my.id',
         pathname: '/storage/**',
       },
     ],
