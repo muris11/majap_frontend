@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
-import { SectionHeading } from "@/components/ui/section-heading";
 import { SidebarGallery } from "@/components/kegiatan/sidebar-gallery";
 import { preloadActivity, preloadActivityRelated, preloadAlbum } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
@@ -66,14 +65,6 @@ export default async function ActivityDetailPage({ params }: Props) {
         <Container>
           <Reveal>
             <div className="space-y-12">
-              {/* Centered Editorial Heading at the very top */}
-              <SectionHeading
-                tag="Kegiatan Kami"
-                title={activity.title}
-                center
-                className="mb-4"
-              />
-
               {/* Direct Split Layout starting from the top */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 max-w-6xl mx-auto items-start">
                 
