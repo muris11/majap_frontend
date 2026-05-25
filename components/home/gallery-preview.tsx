@@ -1,5 +1,3 @@
-"use client";
-
 import { CardStack, CardStackItem } from "@/components/ui/card-stack";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";

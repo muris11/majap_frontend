@@ -1,5 +1,3 @@
-"use client";
-
 import { ExpandCards } from "@/components/ui/expand-cards";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -9,14 +7,12 @@ import { getImageUrl } from "@/lib/utils";
 import { Activity } from "@/types";
 import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 interface ActivitiesPreviewProps {
   initialData: Activity[];
 }
 
 export function ActivitiesPreview({ initialData }: ActivitiesPreviewProps) {
-  const router = useRouter();
   const activities = initialData;
 
   const items = activities.map((a) => ({
@@ -37,13 +33,7 @@ export function ActivitiesPreview({ initialData }: ActivitiesPreviewProps) {
         />
 
         {items.length > 0 ? (
-          <ExpandCards
-            items={items}
-            onCardClick={(index) => {
-              const item = items[index];
-              if (item?.href) router.push(item.href);
-            }}
-          />
+          <ExpandCards items={items} />
         ) : (
           <div className="text-center py-10 text-gray-400 text-sm">
             Belum ada kegiatan.

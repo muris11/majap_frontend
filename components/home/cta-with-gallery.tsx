@@ -64,8 +64,8 @@ export function CtaWithGallery({ images: imageUrls }: CtaWithGalleryProps) {
         <div className="grid grid-cols-1 lg:grid-cols-5 items-center gap-10 lg:gap-14">
           <div className="lg:col-span-3">
             <motion.div
-              initial={{ opacity: 0, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={SPRING_CONFIG}
               className="flex items-center gap-3 text-primary"
@@ -78,8 +78,8 @@ export function CtaWithGallery({ images: imageUrls }: CtaWithGalleryProps) {
             </motion.div>
 
             <motion.h2
-              initial={{ opacity: 0, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ ...SPRING_CONFIG, delay: 0.1 }}
               className="mt-4 max-w-xl text-3xl sm:text-4xl md:text-5xl font-black tracking-tight leading-[1.04]"
@@ -91,8 +91,8 @@ export function CtaWithGallery({ images: imageUrls }: CtaWithGalleryProps) {
             </motion.h2>
 
             <motion.p
-              initial={{ opacity: 0, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ ...SPRING_CONFIG, delay: 0.2 }}
               className="mt-8 text-base md:text-lg text-gray-600 leading-relaxed max-w-3xl"
@@ -101,8 +101,8 @@ export function CtaWithGallery({ images: imageUrls }: CtaWithGalleryProps) {
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, filter: "blur(10px)" }}
-              whileInView={{ opacity: 1, filter: "blur(0px)" }}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ ...SPRING_CONFIG, delay: 0.3 }}
               className="mt-8"

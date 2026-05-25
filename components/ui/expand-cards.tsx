@@ -11,10 +11,9 @@ interface ExpandCard {
 
 interface ExpandCardsProps {
   items: ExpandCard[];
-  onCardClick?: (index: number) => void;
 }
 
-export function ExpandCards({ items, onCardClick }: ExpandCardsProps) {
+export function ExpandCards({ items }: ExpandCardsProps) {
   const [expandedIndex, setExpandedIndex] = useState(0);
 
   if (!items.length) return null;
@@ -25,15 +24,18 @@ export function ExpandCards({ items, onCardClick }: ExpandCardsProps) {
         {items.map((item, idx) => {
           const isExpanded = idx === expandedIndex;
           return (
-            <div
+            <button
               key={idx}
+              type="button"
               className="relative cursor-pointer overflow-hidden rounded-xl md:rounded-2xl transition-all duration-500 ease-in-out"
               style={{
                 width: isExpanded ? "24rem" : "5rem",
                 height: "20rem",
               }}
               onMouseEnter={() => setExpandedIndex(idx)}
-              onClick={() => onCardClick?.(idx)}
+              onClick={() => {
+                if (item.href) window.location.href = item.href;
+              }}
             >
               <img
                 className="w-full h-full object-cover"
@@ -57,7 +59,7 @@ export function ExpandCards({ items, onCardClick }: ExpandCardsProps) {
                   </p>
                 )}
               </div>
-            </div>
+            </button>
           );
         })}
       </div>

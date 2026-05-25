@@ -77,18 +77,7 @@ export default async function AboutPage() {
 
   return (
     <>
-      {/* CSS font family override to Poppins as requested in prompt */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-        
-        /* Apply Poppins only to about page segments for brand alignment */
-        .poppins-font-wrapper * {
-          font-family: 'Poppins', sans-serif !important;
-        }
-      `}} />
-
-      <div className="poppins-font-wrapper">
-        {/* Visi Misi Section (demo.tsx redesign) */}
+        {/* Visi Misi Section */}
         <Section className="bg-white !pt-40 md:!pt-52">
           <Container>
             <Reveal>
@@ -104,10 +93,12 @@ export default async function AboutPage() {
                   {/* Left image block */}
                   <div className="relative shadow-xl shadow-primary/10 rounded-2xl overflow-hidden shrink-0 w-full max-w-[360px]">
                     {aboutPageImage ? (
-                      <img 
-                        className="w-full aspect-square object-cover rounded-2xl"
+                      <ImageWithSkeleton
                         src={aboutPageImage}
-                        alt="Visi & Misi MAJAP" 
+                        alt="Visi & Misi MAJAP"
+                        width={360}
+                        height={360}
+                        className="w-full aspect-square object-cover rounded-2xl"
                       />
                     ) : (
                       <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center">
@@ -169,7 +160,6 @@ export default async function AboutPage() {
             </Container>
           </Section>
         </Reveal>
-      </div>
     </>
   );
 }

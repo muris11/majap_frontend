@@ -1,6 +1,5 @@
 import { Footer } from "@/components/layout/footer";
 import { Navbar } from "@/components/layout/navbar";
-import { ClientWrapper } from "@/components/layout/client-wrapper";
 import { cn } from "@/lib/utils";
 import { SITE, jsonLdOrganization, jsonLdWebsite } from "@/lib/seo";
 import type { Metadata } from "next";
@@ -10,7 +9,7 @@ import "./globals.css";
 const fontSans = Plus_Jakarta_Sans({ 
   subsets: ["latin"], 
   variable: "--font-sans",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "700"],
 });
 
 const siteUrl = SITE.url;
@@ -74,13 +73,11 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebsite()) }}
         />
-         <ClientWrapper>
-           <Navbar />
-           <main className="flex-grow">
-             {children}
-           </main>
-           <Footer />
-         </ClientWrapper>
+         <Navbar />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
       </body>
     </html>
   );
