@@ -2,15 +2,17 @@
 
 import { PageHeader } from "@/components/layout/page-header";
 import { Container } from "@/components/ui/container";
-import { FadeInStagger } from "@/components/ui/motion-wrapper";
 import { Section } from "@/components/ui/section";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Reveal } from "@/components/ui/motion-wrapper";
 import { api } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
 import { Album, Batch, PaginatedResponse } from "@/types";
-import { ChevronDown, ChevronLeft, ChevronRight, Image as ImageIcon, Search } from "lucide-react";
+import { ChevronDown, ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 
@@ -32,18 +34,16 @@ export default function GalleryPage() {
         page: currentPage,
         per_page: 12,
       });
-      
       setAlbums(result.data);
       setMeta(result.meta);
-    } catch (error) {
-      console.error("Failed to fetch albums:", error);
+    } catch {
     } finally {
       setLoading(false);
     }
   }, [selectedBatch, searchQuery, currentPage]);
 
   useEffect(() => {
-    api.getBatches().then(setBatches).catch(console.error);
+    api.getBatches().then(setBatches).catch(() => {});
   }, []);
 
   useEffect(() => {
@@ -58,32 +58,33 @@ export default function GalleryPage() {
 
   return (
     <>
-      <PageHeader 
-        title="Galeri Foto" 
-        description="Koleksi momen berharga dan dokumentasi kegiatan keluarga besar MAJAP Polindra."
-      />
-
-      <Section className="bg-white">
+      <Section className="bg-white !pt-36 md:!pt-48">
         <Container>
-          {/* Search and Filter */}
-          <div className="mb-12 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
+          <SectionHeading
+            tag="Galeri"
+            title="Momen Kebersamaan MAJAP"
+            description="Koleksi momen berharga dan dokumentasi kegiatan keluarga besar MAJAP Polindra."
+            center
+          />
+
+          <div className="mb-10 flex flex-col md:flex-row gap-4 justify-between items-start md:items-center">
             <form onSubmit={handleSearch} className="flex gap-2 w-full md:w-auto">
-              <div className="relative flex-1 md:w-80">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
+              <div className="relative flex-1 md:w-72">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                 <Input
                   type="text"
                   placeholder="Cari album..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="pl-11 h-12 rounded-full border-gray-200 focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 shadow-sm"
+                  className="pl-10 h-11 rounded-xl border-gray-200 focus:border-primary text-sm"
                 />
               </div>
-              <Button type="submit" size="lg" className="h-12 px-6 rounded-full bg-primary text-white hover:bg-primary-dark shadow-md hover:shadow-lg transition-all duration-300">Cari</Button>
+              <Button type="submit" size="sm" className="h-11 px-5 rounded-xl bg-primary text-white hover:bg-primary-dark">Cari</Button>
             </form>
 
             <div className="relative">
-              <select 
-                className="appearance-none bg-white border border-gray-200 text-gray-700 font-medium py-3 px-5 pr-12 rounded-full leading-tight focus:outline-none focus:border-primary focus:ring-4 focus:ring-primary/10 transition-all duration-300 cursor-pointer min-w-[220px] shadow-sm hover:shadow-md"
+              <select
+                className="appearance-none bg-white border border-gray-200 text-gray-700 font-medium py-2.5 px-4 pr-10 rounded-xl text-sm focus:outline-none focus:border-primary cursor-pointer min-w-[200px]"
                 value={selectedBatch || ""}
                 onChange={(e) => {
                   setSelectedBatch(e.target.value ? Number(e.target.value) : null);
@@ -92,87 +93,48 @@ export default function GalleryPage() {
               >
                 <option value="">Semua Angkatan</option>
                 {batches.map((batch) => (
-                  <option key={batch.id} value={batch.id}>
-                    {batch.name}
-                  </option>
+                  <option key={batch.id} value={batch.id}>{batch.name}</option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-primary">
-                <ChevronDown size={18} strokeWidth={2.5} />
-              </div>
+              <ChevronDown size={16} className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             </div>
           </div>
 
+          <Reveal>
           {loading && albums.length === 0 ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-                <Skeleton key={i} className="aspect-square rounded-xl" />
-              ))}
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => <Skeleton key={i} className="aspect-square rounded-xl" />)}
             </div>
           ) : albums.length > 0 ? (
-            <FadeInStagger className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 auto-rows-[250px]">
-              {albums.map((album, index) => (
-                <FadeInStagger.Item key={album.id}
-                  className={`group relative overflow-hidden rounded-3xl bg-gray-900 cursor-pointer shadow-sm hover:shadow-2xl transition-all duration-300 ${loading ? 'opacity-50' : ''}`}
-                >
-                  <Link href={`/galeri/${album.slug}`} className="block w-full h-full">
+              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {albums.map((album) => (
+                  <Link
+                    key={album.id}
+                    href={`/galeri/${album.slug}`}
+                    className="group relative aspect-square rounded-xl overflow-hidden bg-gray-900 shadow-sm"
+                  >
                     {album.cover_image ? (
-                       <img
-                         src={getImageUrl(album.cover_image) || undefined}
-                         alt={album.title}
-                         loading="eager"
-                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100"
-                       />
+                      <ImageWithSkeleton
+                        src={getImageUrl(album.cover_image) || ""}
+                        alt={album.title}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        sizes="(max-width: 768px) 50vw, 25vw"
+                      />
                     ) : (
-                      <div className="absolute inset-0 flex items-center justify-center text-gray-600 bg-gray-200">
-                        <ImageIcon size={48} />
+                      <div className="absolute inset-0 flex items-center justify-center text-gray-500 bg-gray-800">
+                        MAJAP
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex flex-col justify-end p-8 translate-y-4 group-hover:translate-y-0">
-                      <div className="mb-2">
-                        <span className="inline-block text-xs text-white bg-primary/80 px-3 py-1.5 rounded-full backdrop-blur-sm border border-primary/20 font-bold mb-2">
-                        {album.batch.name}
-                      </span>
-                      </div>
-                      <h4 className="text-white font-bold text-2xl line-clamp-2 mb-2">{album.title}</h4>
-                      <p className="text-white/80 text-sm font-medium">{album.photos_count} Foto</p>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-4">
+                      <h4 className="text-white font-bold text-sm line-clamp-1">{album.title}</h4>
+                      <p className="text-white/70 text-xs">{album.photos_count} Foto</p>
                     </div>
                   </Link>
-                </FadeInStagger.Item>
-              ))}
-            </FadeInStagger>
-          ) : (
-            <div className="text-center py-20 text-gray-500">
-              <p>Belum ada album foto yang ditemukan.</p>
-            </div>
-          )}
-
-          {/* Pagination */}
-          {meta && meta.last_page > 1 && (
-            <div className="mt-12 flex justify-center items-center gap-4">
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-              >
-                <ChevronLeft size={16} className="mr-1" />
-                Sebelumnya
-              </Button>
-              <span className="text-sm text-gray-600">
-                Halaman {currentPage} dari {meta.last_page}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setCurrentPage((p) => Math.min(meta.last_page, p + 1))}
-                disabled={currentPage === meta.last_page}
-              >
-                Selanjutnya
-                <ChevronRight size={16} className="ml-1" />
-              </Button>
-            </div>
-          )}
+                ))}
+              </div>
+          ) : null}
+          </Reveal>
         </Container>
       </Section>
     </>

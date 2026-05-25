@@ -1,12 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { FadeIn, ScaleIn, SlideIn } from "@/components/ui/motion-wrapper";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { Setting } from "@/types";
-import { ArrowRight, Calendar, Users } from "lucide-react";
-import Image from "next/image";
+import { ArrowUpRight, Calendar, Users } from "lucide-react";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import Link from "next/link";
 
 interface AboutPreviewProps {
@@ -16,100 +15,84 @@ interface AboutPreviewProps {
 
 export function AboutPreview({ stats, aboutImage }: AboutPreviewProps) {
   return (
-    <Section className="bg-white relative overflow-hidden">
+    <Section className="relative -mt-12 bg-white md:-mt-16">
       <Container>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-           <SlideIn direction="left" className="space-y-8 order-1 lg:order-1 relative z-10">
-            <div className="space-y-4">
-              <h2 className="flex items-center gap-2 text-primary text-sm font-bold tracking-widest uppercase">
-                <span className="w-8 h-[2px] bg-primary"></span>
+        <div className="grid lg:grid-cols-5 gap-10 lg:gap-14 items-center">
+          <div className="lg:col-span-3 max-w-3xl text-center lg:text-left">
+            <div className="flex items-center justify-center gap-3 text-primary lg:justify-start">
+              <span className="h-px w-12 bg-primary/45" />
+              <span className="text-xs md:text-sm font-semibold tracking-[0.24em] uppercase">
                 Tentang MAJAP
-              </h2>
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 tracking-tight leading-[1.1]">
-                Membangun Solidaritas <br/><span className="text-primary">Mahasiswa Jabodetabek</span>
-              </h3>
+              </span>
+              <span className="h-px w-12 bg-primary/45" />
             </div>
 
-            <div className="space-y-5">
-              <p className="text-lg text-gray-600 leading-relaxed font-medium">
-                MAJAP (Mahasiswa Jabodetabek Polindra) adalah organisasi daerah
-                yang mewadahi mahasiswa asal Jakarta, Bogor, Depok, Tangerang,
-                dan Bekasi yang menempuh pendidikan di Politeknik Negeri
-                Indramayu.
-              </p>
-              <p className="text-base text-gray-500 leading-relaxed">
-                Kami berkomitmen untuk menjadi rumah kedua bagi mahasiswa
-                perantauan, serta menjadi wadah untuk mengembangkan soft skill,
-                kepemimpinan, dan jaringan profesional.
-              </p>
-            </div>
+            <h2 className="mt-4 mx-auto lg:mx-0 max-w-3xl text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-[1.02]">
+              <span className="relative block">Membangun Solidaritas</span>
+              <span className="relative block bg-gradient-to-r from-primary via-primary-light to-gray-300 bg-clip-text text-transparent">
+                Mahasiswa Jabodetabek
+              </span>
+            </h2>
 
-            <div className="pt-4">
-                <Button size="lg" className="rounded-full px-8 py-6 text-base font-semibold shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-all" asChild>
-                    <Link href="/tentang">Pelajari Lebih Lanjut <ArrowRight className="ml-2 w-5 h-5"/></Link>
-                </Button>
-            </div>
-           </SlideIn>
+            <p className="mt-8 mx-auto lg:mx-0 text-base md:text-lg text-gray-600 leading-relaxed max-w-3xl">
+              MAJAP (Mahasiswa Jabodetabek Polindra) adalah organisasi daerah yang mewadahi mahasiswa asal Jakarta, Bogor, Depok, Tangerang, dan Bekasi yang menempuh pendidikan di Politeknik Negeri Indramayu.
+            </p>
 
-           <SlideIn direction="right" className="order-2 lg:order-2 relative w-full flex flex-col items-center lg:block">
-                {/* Decorative Elements */}
-                <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary/5 rounded-full blur-3xl -z-10"></div>
-                <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-secondary/10 rounded-full blur-2xl -z-10"></div>
+            <p className="mt-5 mx-auto lg:mx-0 text-base md:text-lg text-gray-600 leading-relaxed max-w-3xl">
+              Kami berkomitmen untuk menjadi rumah kedua bagi mahasiswa perantauan, serta menjadi wadah untuk mengembangkan soft skill, kepemimpinan, dan jaringan profesional.
+            </p>
 
-            {aboutImage ? (
-              <div className="relative w-full max-w-sm lg:max-w-full mx-auto">
-                <div className="relative w-full aspect-[4/5] md:aspect-square lg:aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl">
-                    <Image
-                    src={aboutImage}
-                    alt="Tentang MAJAP"
-                    fill
-                    className="object-cover transition-transform duration-700 hover:scale-105"
-                    sizes="(max-width: 1024px) 100vw, 50vw"
-                    />
+            <div className="mt-8 flex flex-wrap justify-center lg:justify-start gap-4">
+              <div className="flex items-center gap-3 px-5 py-4 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="p-2.5 rounded-lg bg-primary/10 text-primary">
+                  <Users className="w-5 h-5" />
                 </div>
-                
-                {/* Floating Stats Card 1 */}
-                <ScaleIn className="absolute -bottom-8 -left-8 bg-white p-5 rounded-2xl shadow-xl border border-gray-100 min-w-[160px] z-20 hidden md:block" delay={0.3}>
-                    <div className="flex items-center gap-3 mb-1">
-                        <div className="p-2 bg-primary/10 rounded-lg text-primary">
-                            <Users className="w-5 h-5" />
-                        </div>
-                        <span className="text-sm font-semibold text-gray-500">Anggota</span>
-                    </div>
-                    <div className="text-3xl font-bold text-gray-900">{stats?.active_members || "150+"}</div>
-                </ScaleIn>
+                <div>
+                  <div className="text-xl font-bold text-gray-900 leading-none">{stats?.active_members || "110+"}</div>
+                  <div className="text-sm text-gray-500 mt-0.5">Anggota Aktif</div>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 px-5 py-4 rounded-xl bg-gray-50 border border-gray-100">
+                <div className="p-2.5 rounded-lg bg-secondary/10 text-amber-700">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="text-xl font-bold text-gray-900 leading-none">{stats?.established_year || "2018"}</div>
+                  <div className="text-sm text-gray-500 mt-0.5">Berdiri</div>
+                </div>
+              </div>
+            </div>
 
-                {/* Floating Stats Card 2 */}
-                <ScaleIn className="absolute -top-8 -right-8 bg-primary text-white p-5 rounded-2xl shadow-xl shadow-primary/20 min-w-[160px] z-20 hidden md:block" delay={0.5}>
-                    <div className="flex items-center gap-3 mb-1">
-                        <div className="p-2 bg-white/20 rounded-lg text-white">
-                            <Calendar className="w-5 h-5" />
-                        </div>
-                        <span className="text-sm font-semibold text-white/80">Berdiri</span>
-                    </div>
-                    <div className="text-3xl font-bold text-white">{stats?.established_year || "2015"}</div>
-                </ScaleIn>
+            <div className="mt-8 flex justify-center lg:justify-start">
+              <Button size="lg" className="rounded-lg group" asChild>
+              <Link href="/tentang">
+                Pelajari Lebih Lanjut
+                <ArrowUpRight className="ml-1.5 w-4 h-4 group-hover:rotate-45 transition-transform" />
+              </Link>
+              </Button>
+            </div>
+          </div>
+
+          <div className="lg:col-span-2 lg:justify-self-end w-full flex justify-center lg:justify-end">
+            {aboutImage ? (
+              <div className="relative aspect-[3/4] w-full max-w-[420px] overflow-hidden rounded-2xl shadow-md ring-1 ring-black/5">
+                <ImageWithSkeleton
+                  src={aboutImage}
+                  alt="Tentang MAJAP"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                />
               </div>
             ) : (
-              <div className="w-full aspect-square rounded-3xl bg-gray-100 flex items-center justify-center">
-                <p className="text-gray-400">Image placeholder</p>
+              <div className="relative aspect-[3/4] w-full max-w-[420px] overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-gray-50 to-secondary/10 shadow-md ring-1 ring-black/5">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(15,76,69,0.16),transparent_34%),radial-gradient(circle_at_80%_80%,rgba(212,175,55,0.18),transparent_32%)]" />
+                <div className="relative flex h-full items-end p-8">
+                  <p className="text-4xl font-black tracking-tight text-primary">MAJAP</p>
+                </div>
               </div>
             )}
-            
-            {/* Mobile Stats (Visible only on small screens) */}
-            <div className="grid grid-cols-2 gap-4 mt-6 md:hidden">
-                <div className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col items-center text-center">
-                    <Users className="w-6 h-6 text-primary mb-2" />
-                    <span className="text-2xl font-bold text-gray-900">{stats?.active_members || "150+"}</span>
-                    <span className="text-xs font-semibold text-gray-500">Anggota Aktif</span>
-                </div>
-                <div className="bg-primary text-white p-4 rounded-xl shadow-sm flex flex-col items-center text-center">
-                    <Calendar className="w-6 h-6 mb-2 text-white/80" />
-                    <span className="text-2xl font-bold">{stats?.established_year || "2015"}</span>
-                    <span className="text-xs font-semibold text-white/80">Tahun Berdiri</span>
-                </div>
-            </div>
-           </SlideIn>
+          </div>
         </div>
       </Container>
     </Section>

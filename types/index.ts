@@ -48,6 +48,7 @@ export interface Batch {
 export interface OrganizationMember {
   id: number;
   position: string;
+  name: string;
   photo: string | null;
   description: string | null;
   level: number;
@@ -96,6 +97,17 @@ export interface Photo {
   id: number;
   image_path: string;
   caption: string | null;
+}
+
+export interface Faq {
+  id: number;
+  question: string;
+  answer: string;
+  order: number;
+}
+
+export interface Suggestion {
+  category?: string;
 }
 
 export interface User {

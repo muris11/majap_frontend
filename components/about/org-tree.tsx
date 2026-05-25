@@ -3,6 +3,8 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { OrganizationMember } from "@/types";
 import { User, Users } from "lucide-react";
+import { getImageUrl } from "@/lib/utils";
+import Image from "next/image";
 
 interface OrgTreeProps {
   members: OrganizationMember[];
@@ -29,42 +31,65 @@ export function OrgTree({ members }: OrgTreeProps) {
   const levels = Object.keys(groupedByLevel).map(Number).sort((a, b) => a - b);
 
   const MemberCard = ({ member, size = "normal" }: { member: OrganizationMember; size?: "large" | "normal" | "small" }) => {
+    const isLarge = size === "large";
+    const hasPhoto = member.photo && !member.photo.includes("placeholder.png");
+    const displayPhoto = hasPhoto ? getImageUrl(member.photo) : null;
+    const initialLetter = member.name ? member.name.charAt(0).toUpperCase() : "";
+
     return (
-      <div className={`relative group transition-all duration-300 ${size === "large" ? "w-56 md:w-64 lg:w-72" : "w-40 md:w-48 lg:w-56"}`}>
+      <div className={`${isLarge ? "w-56 md:w-64 lg:w-72" : "w-40 md:w-48 lg:w-56"}`}>
         <div className={`
-          absolute inset-0 rounded-2xl bg-gradient-to-b from-primary/10 to-transparent blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500
-        `} />
-        
-        <div className={`
-          relative bg-white rounded-2xl border transition-all duration-300 overflow-hidden
-          ${size === "large" 
-            ? "border-primary/20 shadow-lg shadow-primary/5 p-4 md:p-6 scale-105 z-10" 
-            : "border-gray-100 hover:border-primary/20 shadow-sm hover:shadow-md p-3 md:p-5"
+          bg-white rounded-2xl border transition-all duration-300 overflow-hidden flex flex-col items-center
+          ${isLarge 
+            ? "border-primary/20 shadow-md p-5 md:p-6 scale-105 z-10 hover:shadow-lg hover:-translate-y-1" 
+            : "border-gray-200 shadow-sm hover:shadow-md hover:-translate-y-1 hover:border-primary/20 p-4 md:p-5"
           }
         `}>
-          {/* Avatar Placeholder */}
-          <div className="flex justify-center mb-3 md:mb-4">
+          {/* Avatar Container */}
+          <div className="relative flex justify-center mb-4 shrink-0">
             <div className={`
-              rounded-full flex items-center justify-center text-primary bg-primary/5
-              ${size === "large" ? "w-16 h-16 md:w-20 md:h-20" : "w-12 h-12 md:w-14 md:h-14"}
+              rounded-full overflow-hidden border border-gray-100 flex items-center justify-center bg-gray-50 text-primary shadow-inner
+              ${isLarge ? "w-16 h-16 md:w-20 md:h-20" : "w-12 h-12 md:w-14 md:h-14"}
             `}>
-              {size === "large" ? <User size={32} className="md:w-10 md:h-10" /> : <Users size={20} className="md:w-6 md:h-6" />}
+              {displayPhoto ? (
+                <img
+                  src={displayPhoto}
+                  alt={member.name || member.position}
+                  className="w-full h-full object-cover"
+                />
+              ) : initialLetter ? (
+                <span className={`font-black tracking-tight text-primary/80 ${isLarge ? "text-2xl" : "text-lg"}`}>
+                  {initialLetter}
+                </span>
+              ) : isLarge ? (
+                <User size={32} className="md:w-10 md:h-10 text-primary/70" />
+              ) : (
+                <Users size={20} className="md:w-6 md:h-6 text-primary/70" />
+              )}
             </div>
           </div>
 
-          <div className="text-center space-y-2">
-            <h4 className={`font-bold text-gray-900 leading-tight ${size === "large" ? "text-base md:text-lg" : "text-xs md:text-sm"}`}>
+          {/* Details */}
+          <div className="text-center space-y-2 w-full">
+            {member.name && (
+              <h3 className={`font-bold text-gray-900 leading-tight truncate ${isLarge ? "text-base md:text-lg" : "text-sm"}`}>
+                {member.name}
+              </h3>
+            )}
+            
+            <div className={`
+              inline-flex items-center rounded-full bg-primary/5 px-2.5 py-0.5 font-semibold text-primary tracking-wider uppercase
+              ${isLarge ? "text-[10px] md:text-xs" : "text-[9px] md:text-[10px]"}
+            `}>
               {member.position}
-            </h4>
+            </div>
+
             {member.description && (
-              <p className="text-gray-500 text-[10px] md:text-xs leading-relaxed line-clamp-2">
-                {member.description}
+              <p className="text-gray-500 text-[10px] md:text-xs leading-relaxed line-clamp-2 mt-1">
+                {member.description.replace(/^(\s*-\s*)/, "")}
               </p>
             )}
           </div>
-
-          {/* Decorative bottom bar */}
-          <div className={`absolute bottom-0 left-0 w-full h-1 bg-primary transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-center`} />
         </div>
       </div>
     );

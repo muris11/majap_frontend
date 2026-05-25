@@ -4,6 +4,7 @@ import {
   ApiResponse, 
   Batch, 
   DidYouKnowFact, 
+  Faq,
   HeroSlide,
   OrganizationMember, 
   PaginatedResponse,
@@ -150,6 +151,28 @@ export const api = {
   getAlbum: (slug: string) => fetchApi<Album>(`/albums/${slug}`),
   getAlbumOther: (slug: string) => fetchApi<Album[]>(`/albums/${slug}/others`),
   
+  getFaqs: () => fetchApi<Faq[]>("/faqs"),
+
+  submitSuggestion: async (data: { content: string; category?: string }) => {
+    const res = await fetch(`${API_BASE_URL}/suggestions`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Accept": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const errorData: ApiError = await res.json().catch(() => ({
+        message: `HTTP ${res.status}: ${res.statusText}`,
+      }));
+      throw new Error(errorData.message || 'Failed to send suggestion');
+    }
+
+    return res.json();
+  },
+
   submitContact: async (data: { name: string; email: string; subject: string; message: string }) => {
     const res = await fetch(`${API_BASE_URL}/contact`, {
       method: "POST",
@@ -258,7 +281,6 @@ async function fetchApiServer<T>(endpoint: string): Promise<T | null> {
     });
 
     if (!res.ok) {
-      console.error(`API Error: ${res.status} for ${endpoint}`);
       return null;
     }
 
@@ -266,13 +288,11 @@ async function fetchApiServer<T>(endpoint: string): Promise<T | null> {
     const json: ApiResponse<T> = rawJson.result || rawJson;
     
     if (!json.success) {
-      console.error(`API failed: ${json.message} for ${endpoint}`);
       return null;
     }
     
     return json.data;
-  } catch (error) {
-    console.error(`Fetch error for ${endpoint}:`, error);
+  } catch {
     return null;
   }
 }
@@ -288,7 +308,6 @@ async function fetchPaginatedApiServer<T>(endpoint: string): Promise<PaginatedRe
     });
 
     if (!res.ok) {
-      console.error(`API Error: ${res.status} for ${endpoint}`);
       return null;
     }
 
@@ -296,7 +315,6 @@ async function fetchPaginatedApiServer<T>(endpoint: string): Promise<PaginatedRe
     const json = rawJson.result || rawJson;
     
     if (!json.success) {
-      console.error(`API failed: ${json.message} for ${endpoint}`);
       return null;
     }
     
@@ -304,8 +322,7 @@ async function fetchPaginatedApiServer<T>(endpoint: string): Promise<PaginatedRe
       data: json.data,
       meta: json.meta || { current_page: 1, last_page: 1, per_page: 12, total: json.data.length },
     };
-  } catch (error) {
-    console.error(`Fetch error for ${endpoint}:`, error);
+  } catch {
     return null;
   }
 }

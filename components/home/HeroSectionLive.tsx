@@ -3,7 +3,7 @@
 import { useLiveData } from "@/lib/hooks";
 import { api } from "@/lib/api";
 import { HeroSlide } from "@/types";
-import Image from "next/image";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { useState, useEffect } from "react";
 
 export function HeroSectionLive() {
@@ -55,7 +55,7 @@ export function HeroSectionLive() {
             index === currentSlide ? "opacity-100" : "opacity-0"
           }`}
         >
-          <Image
+          <ImageWithSkeleton
             src={slide.image}
             alt={`Slide ${index + 1}`}
             fill

@@ -1,113 +1,56 @@
- "use client";
- 
- import { motion, MotionProps } from "framer-motion";
- import { cn } from "@/lib/utils";
- 
- interface FadeInProps extends MotionProps {
-   children: React.ReactNode;
-   delay?: number;
-   className?: string;
-  direction?: "up" | "down" | "left" | "right";
-  fullWidth?: boolean;
- }
- 
-export function FadeIn({ children, delay = 0, direction = "up", fullWidth = false, className, ...props }: FadeInProps) {
-  const variants = {
-    hidden: { 
-      opacity: 0, 
-      y: direction === "up" ? 40 : direction === "down" ? -40 : 0,
-      x: direction === "left" ? 40 : direction === "right" ? -40 : 0,
-    },
-    visible: { 
-      opacity: 1, 
-      y: 0, 
-      x: 0,
-    }
-  };
+"use client";
 
-   return (
-     <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
-      variants={variants}
-       transition={{ duration: 0.5, delay, ease: "easeOut" }}
-      className={cn(fullWidth ? "w-full" : "", className)}
-       {...props}
-     >
-       {children}
-     </motion.div>
-   );
- }
+import { cn } from "@/lib/utils";
+import { useScrollReveal } from "@/lib/hooks/useScrollReveal";
+import * as React from "react";
 
-export function ScaleIn({ children, delay = 0, className, ...props }: FadeInProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.5, delay, type: "spring", stiffness: 100 }}
-      className={cn(className)}
-      {...props}
-    >
-      {children}
-    </motion.div>
-  );
+interface RevealProps {
+  children: React.ReactNode;
+  className?: string;
+  delay?: number;
+  variant?: "up" | "fade" | "scale";
 }
- 
-export function SlideIn({ children, delay = 0, direction = "left", className, ...props }: FadeInProps) {
-  const variants = {
-    hidden: { 
-      opacity: 0, 
-      x: direction === "left" ? -100 : 100 
-    },
-    visible: { 
-      opacity: 1, 
-      x: 0 
-    }
-  };
+
+export function Reveal({ children, className, delay = 0, variant = "up" }: RevealProps) {
+  const { ref, isVisible } = useScrollReveal();
+  const typeClass = variant === "fade" ? "reveal-fade" : variant === "scale" ? "reveal-scale" : "reveal";
+  const delayClass = delay > 0 ? `reveal-delay-${Math.min(Math.round(delay / 0.1), 4)}` : "";
 
   return (
-    <motion.div
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
-      variants={variants}
-      transition={{ duration: 0.6, delay, ease: "easeOut" }}
-      className={cn(className)}
-      {...props}
+    <div
+      ref={ref}
+      className={cn(typeClass, delayClass, isVisible && "visible", className)}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
 
- export function FadeInStagger({ children, className, ...props }: MotionProps & { className?: string }) {
-   return (
-     <motion.div
-       initial="hidden"
-       whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }}
-      transition={{ staggerChildren: 0.15 }}
-       className={cn(className)}
-       {...props}
-     >
-       {children}
-     </motion.div>
-   );
- }
- 
- FadeInStagger.Item = function FadeInStaggerItem({ children, className, ...props }: MotionProps & { className?: string }) {
-   return (
-     <motion.div
-       variants={{
-        hidden: { opacity: 0, y: 30 },
-         visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
-       }}
-       className={cn(className)}
-       {...props}
-     >
-       {children}
-     </motion.div>
-   );
- };
+export function RevealStagger({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn("space-y-6", className)}>{children}</div>;
+}
+
+export function FadeIn(props: RevealProps) {
+  return <Reveal variant="up" {...props} />;
+}
+
+export function ScaleIn(props: RevealProps) {
+  return <Reveal variant="scale" {...props} />;
+}
+
+export function SlideIn({ children, className, delay = 0, direction = "left" }: RevealProps & { direction?: "left" | "right" }) {
+  return <Reveal variant="up" delay={delay} className={className}>{children}</Reveal>;
+}
+
+export function FadeInStagger({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <div className={cn(className)}>{children}</div>;
+}
+
+FadeInStagger.Item = function FadeInStaggerItem({ children, className }: { children: React.ReactNode; className?: string }) {
+  const { ref, isVisible } = useScrollReveal();
+  return (
+    <div ref={ref} className={cn("reveal", isVisible && "visible", className)}>
+      {children}
+    </div>
+  );
+};

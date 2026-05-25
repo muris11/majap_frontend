@@ -1,25 +1,38 @@
+import type { Metadata } from "next";
 import { DidYouKnowSection } from "@/components/about/did-you-know-section";
 import { OrgTreeSection } from "@/components/about/org-tree-section";
-import { PageHeader } from "@/components/layout/page-header";
 import { Container } from "@/components/ui/container";
-import { FadeIn, SlideIn } from "@/components/ui/motion-wrapper";
+import { Reveal } from "@/components/ui/motion-wrapper";
 import { Section } from "@/components/ui/section";
+import { SectionHeading } from "@/components/ui/section-heading";
 import { API_BASE_URL } from "@/lib/api";
 import { DidYouKnowFact, OrganizationMember, Setting } from "@/types";
-import { Users } from "lucide-react";
-import Image from "next/image";
+import { Users, Send } from "lucide-react";
+import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
+import { getImageUrl } from "@/lib/utils";
+import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Tentang Kami",
+  description:
+    "Visi, misi, dan struktur organisasi Mahasiswa Jabodetabek Polindra. Mengenal lebih dekat keluarga besar Mahasiswa Jabodetabek Politeknik Negeri Indramayu.",
+  openGraph: {
+    title: "Tentang Kami — Mahasiswa Jabodetabek Polindra",
+    description:
+      "Visi, misi, dan struktur organisasi Mahasiswa Jabodetabek Polindra.",
+  },
+};
 
 async function getOrganization(): Promise<OrganizationMember[]> {
   try {
     const res = await fetch(`${API_BASE_URL}/organization`, {
-      cache: 'no-store',
+      next: { revalidate: 60 },
     });
     if (!res.ok) return [];
     const rawJson = await res.json();
     const json = rawJson.result || rawJson;
     return json.success ? json.data : [];
-  } catch (error) {
-    console.error("Failed to fetch organization:", error);
+  } catch {
     return [];
   }
 }
@@ -27,14 +40,13 @@ async function getOrganization(): Promise<OrganizationMember[]> {
 async function getSettings(): Promise<Setting | null> {
   try {
     const res = await fetch(`${API_BASE_URL}/settings`, {
-      cache: 'no-store',
+      next: { revalidate: 60 },
     });
     if (!res.ok) return null;
     const rawJson = await res.json();
     const json = rawJson.result || rawJson;
     return json.success ? json.data : null;
-  } catch (error) {
-    console.error("Failed to fetch settings:", error);
+  } catch {
     return null;
   }
 }
@@ -42,14 +54,13 @@ async function getSettings(): Promise<Setting | null> {
 async function getDidYouKnowFacts(): Promise<DidYouKnowFact[]> {
   try {
     const res = await fetch(`${API_BASE_URL}/did-you-know`, {
-      cache: 'no-store',
+      next: { revalidate: 60 },
     });
     if (!res.ok) return [];
     const rawJson = await res.json();
     const json = rawJson.result || rawJson;
     return json.success ? json.data : [];
-  } catch (error) {
-    console.error("Failed to fetch did you know facts:", error);
+  } catch {
     return [];
   }
 }
@@ -62,102 +73,103 @@ export default async function AboutPage() {
   ]);
 
   const aboutPageImage = (settings as Record<string, unknown>)?.about_page_image as string | null;
+  const activeMembersCount = (settings as Record<string, unknown>)?.active_members || "110+";
 
   return (
     <>
-      <PageHeader
-        title="Tentang Kami"
-        description="Mengenal lebih dekat MAJAP Polindra, visi misi, dan struktur organisasi."
-      />
+      {/* CSS font family override to Poppins as requested in prompt */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+        
+        /* Apply Poppins only to about page segments for brand alignment */
+        .poppins-font-wrapper * {
+          font-family: 'Poppins', sans-serif !important;
+        }
+      `}} />
 
-      <Section className="bg-white">
-        <Container>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 md:gap-20 items-center mb-20 md:mb-28">
-            <SlideIn direction="left" className="space-y-8">
-              <div className="space-y-4">
-                <h2 className="text-primary text-xs md:text-sm font-semibold tracking-widest uppercase">
-                  Visi & Misi
-                </h2>
-                <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight leading-tight">
-                  Mewujudkan Mahasiswa yang Berkualitas
-                </h3>
-              </div>
-              <div className="space-y-8 text-gray-600 leading-relaxed">
-                <div>
-                  <h4 className="text-lg md:text-xl font-bold text-gray-900 mb-3">
-                    Visi
-                  </h4>
-                  <p className="text-base md:text-lg">
-                    Terciptanya tali persaudaraan sesama Mahasiswa JABODETABEK POLINDRA yang
-                    berintegritas, berkualitas, dan berdedikasi tinggi bagi nusa dan bangsa.
-                  </p>
-                </div>
-                <div>
-                  <h4 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
-                    Misi
-                  </h4>
-                  <ul className="list-disc pl-6 space-y-3 text-base md:text-lg">
-                    <li>
-                      Meningkatkan kebersamaan dan kekeluargaan antara sesama Mahasiswa
-                      JABODETABEK POLINDRA.
-                    </li>
-                    <li>
-                      Mengembangkan potensi kreatif dan inovatif keilmuan anggota dan masyarakat
-                      daerah.
-                    </li>
-                    <li>
-                      Berperan aktif dalam lingkungan masyarakat dengan mewujudkan nilai-nilai agama dan
-                      sosial.
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </SlideIn>
-            <SlideIn direction="right" className="relative">
-              {aboutPageImage ? (
-                <div className="rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 relative z-10 shadow-sm max-w-[550px] mx-auto">
-                  <Image
-                    src={aboutPageImage}
-                    alt="MAJAP Polindra"
-                    width={550}
-                    height={550}
-                    className="w-full h-auto object-contain"
-                  />
-                </div>
-              ) : (
-                <div className="aspect-video rounded-2xl overflow-hidden bg-gray-100 border border-gray-200 relative z-10 shadow-sm">
-                  <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-primary/5 to-primary/10">
-                    <div className="text-center space-y-4 p-8">
-                      <div className="w-20 h-20 mx-auto rounded-full bg-primary/10 flex items-center justify-center">
-                        <Users className="w-10 h-10 text-primary" />
+      <div className="poppins-font-wrapper">
+        {/* Visi Misi Section (demo.tsx redesign) */}
+        <Section className="bg-white !pt-40 md:!pt-52">
+          <Container>
+            <Reveal>
+              <div className="space-y-12">
+                {/* Centered Heading with dash lines */}
+                <SectionHeading
+                  tag="Visi & Misi"
+                  title="Mewujudkan Mahasiswa yang Berkualitas"
+                  center
+                />
+
+                <section className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-16 max-w-6xl mx-auto">
+                  {/* Left image block */}
+                  <div className="relative shadow-xl shadow-primary/10 rounded-2xl overflow-hidden shrink-0 w-full max-w-[360px]">
+                    {aboutPageImage ? (
+                      <img 
+                        className="w-full aspect-square object-cover rounded-2xl"
+                        src={aboutPageImage}
+                        alt="Visi & Misi MAJAP" 
+                      />
+                    ) : (
+                      <div className="aspect-square w-full rounded-2xl bg-gray-100 flex items-center justify-center">
+                        <Users className="w-16 h-16 text-primary/40" />
                       </div>
-                      <p className="text-gray-500 font-medium text-lg">
-                        MAJAP Polindra
-                      </p>
-                    </div>
+                    )}
                   </div>
-                </div>
-              )}
-            </SlideIn>
-          </div>
-        </Container>
-      </Section>
 
-      <DidYouKnowSection facts={didYouKnowFacts} />
+                  {/* Right content block styled exactly like demo.tsx but themed with MAJAP brand */}
+                  <div className="text-sm text-gray-600 max-w-xl w-full">
+                    <div className="space-y-6">
+                      <div>
+                        <h3 className="text-base font-bold text-gray-900 mb-2">Visi Kami</h3>
+                        <p className="leading-relaxed text-gray-600">
+                          Terciptanya tali persaudaraan sesama Mahasiswa JABODETABEK POLINDRA yang
+                          berintegritas, berkualitas, dan berdedikasi tinggi bagi nusa dan bangsa.
+                        </p>
+                      </div>
 
-      <Section className="bg-white">
-        <Container>
-          <FadeIn className="text-center mb-16 space-y-4">
-            <h2 className="text-primary text-xs md:text-sm font-semibold tracking-widest uppercase">
-              Struktur Organisasi
-            </h2>
-            <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 tracking-tight">
-              Pengurus Periode Ini
-            </h3>
-          </FadeIn>
-          <OrgTreeSection members={members} />
-        </Container>
-      </Section>
+                      <div>
+                        <h3 className="text-base font-bold text-gray-900 mb-2">Misi Kami</h3>
+                        <ul className="list-disc pl-5 space-y-2 text-gray-600">
+                          <li>Meningkatkan kebersamaan dan kekeluargaan antara sesama Mahasiswa JABODETABEK POLINDRA.</li>
+                          <li>Mengembangkan potensi kreatif dan inovatif keilmuan anggota dan masyarakat daerah.</li>
+                          <li>Berperan aktif dalam lingkungan masyarakat dengan mewujudkan nilai-nilai agama dan sosial.</li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <button className="flex items-center gap-2 mt-8 hover:-translate-y-0.5 transition bg-gradient-to-r from-primary to-primary-light py-3 px-8 rounded-full text-white font-bold shadow-md shadow-primary/10">
+                      <Link href="/kegiatan" className="flex items-center gap-2">
+                        <span>Lihat Kegiatan</span>
+                        <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M12.53 6.53a.75.75 0 0 0 0-1.06L7.757.697a.75.75 0 1 0-1.06 1.06L10.939 6l-4.242 4.243a.75.75 0 0 0 1.06 1.06zM0 6v.75h12v-1.5H0z"
+                            fill="#fff" />
+                        </svg>
+                      </Link>
+                    </button>
+                  </div>
+                </section>
+              </div>
+            </Reveal>
+          </Container>
+        </Section>
+
+        <Reveal><DidYouKnowSection facts={didYouKnowFacts} /></Reveal>
+
+        {/* Struktur Organisasi Section (Pengurus Periode Ini) */}
+        <Reveal>
+          <Section className="bg-white py-16 md:py-20">
+            <Container>
+              <SectionHeading
+                tag="Struktur Organisasi"
+                title="Pengurus Periode Ini"
+                center
+              />
+              <OrgTreeSection members={members} />
+            </Container>
+          </Section>
+        </Reveal>
+      </div>
     </>
   );
 }

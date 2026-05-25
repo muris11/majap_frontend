@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
  import { PageHeader } from "@/components/layout/page-header";
  import { Container } from "@/components/ui/container";
  import { Section } from "@/components/ui/section";
+ import { Reveal } from "@/components/ui/motion-wrapper";
+ 
+export const metadata: Metadata = {
+  title: "Kebijakan Privasi",
+  description: "Kebijakan privasi dan perlindungan data pengguna website Mahasiswa Jabodetabek Polindra.",
+};
  
  export default function PrivacyPolicyPage() {
    return (
@@ -13,8 +20,8 @@
  
        <Section className="bg-white">
          <Container>
-          <div className="max-w-2xl mx-auto">
-            <p className="text-sm text-gray-500 mb-8 text-center">
+           <Reveal><div className="max-w-2xl mx-auto">
+             <p className="text-sm text-gray-500 mb-8 text-center">
               Terakhir diperbarui: 22 Desember 2025
             </p>
 
@@ -86,13 +93,13 @@
                   Jika Anda memiliki pertanyaan tentang kebijakan privasi ini:
                 </p>
                 <div className="flex flex-wrap gap-4 text-sm">
-                  <a href="mailto:majapagram.com/majap_polindra" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">@majap_polindra</a>
+                  <a href="mailto:majapolindra@gmail.com" className="text-primary hover:underline">majapolindra@gmail.com</a>
                 </div>
               </div>
             </div>
-           </div>
-         </Container>
-       </Section>
+            </div></Reveal>
+          </Container>
+        </Section>
      </>
    );
  }

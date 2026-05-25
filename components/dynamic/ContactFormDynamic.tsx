@@ -26,10 +26,8 @@ export function ContactFormDynamic() {
         message: String(values.message),
       });
       setSuccess(true);
-    } catch (err) {
-      console.error(err);
+    } catch {
       setSubmitError("Terjadi kesalahan saat mengirim pesan. Silakan coba lagi.");
-      throw err;
     }
   };
 

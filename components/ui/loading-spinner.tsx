@@ -6,19 +6,18 @@ export function LoadingSpinner({
   text?: string | null;
 }) {
   const sizeClasses = {
-    sm: "w-6 h-6 border-2",
-    md: "w-10 h-10 border-3",
-    lg: "w-14 h-14 border-4",
+    sm: "h-2 w-24",
+    md: "h-2.5 w-36",
+    lg: "h-3 w-48",
   };
 
   return (
     <div className="flex flex-col items-center justify-center gap-3">
-      <div
-        className={`${sizeClasses[size]} rounded-full border-gray-200 border-t-primary animate-spin`}
-        style={{ borderTopColor: "#606C38" }}
-      />
+      <div className={`${sizeClasses[size]} relative overflow-hidden rounded-full bg-primary/10`}>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/60 to-transparent animate-shimmer" />
+      </div>
       {text && (
-        <p className="text-sm font-medium text-gray-500">{text}</p>
+        <p className="text-sm font-medium text-primary/70">{text}</p>
       )}
     </div>
   );

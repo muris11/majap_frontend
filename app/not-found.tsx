@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
  import { Button } from "@/components/ui/button";
  import { Container } from "@/components/ui/container";
  import { Section } from "@/components/ui/section";
  import { FileQuestion, Home } from "lucide-react";
  import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Halaman Tidak Ditemukan",
+  robots: { index: false, follow: false },
+};
  
  export default function NotFound() {
    return (

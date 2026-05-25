@@ -13,9 +13,9 @@
    error: Error & { digest?: string };
    reset: () => void;
  }) {
-   useEffect(() => {
-     console.error("Application error:", error);
-   }, [error]);
+    useEffect(() => {
+      void error;
+    }, [error]);
  
    return (
      <Section className="bg-white min-h-[60vh] flex items-center">

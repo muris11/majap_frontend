@@ -69,8 +69,7 @@ function startGlobalPolling(interval: number = 10000) {
         // Notify all listeners
         versionListeners.forEach((listener) => listener());
       }
-    } catch (error) {
-      console.error("Failed to poll cache versions:", error);
+    } catch {
     }
   }, interval);
 }
@@ -169,8 +168,7 @@ export function useRefreshResource() {
       const newVersions = await fetchVersions();
       globalVersions = newVersions;
       versionListeners.forEach((listener) => listener());
-    } catch (error) {
-      console.error("Failed to trigger refresh:", error);
+    } catch {
     }
   }, []);
 

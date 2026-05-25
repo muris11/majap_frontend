@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
  import { PageHeader } from "@/components/layout/page-header";
  import { Container } from "@/components/ui/container";
  import { Section } from "@/components/ui/section";
+ import { Reveal } from "@/components/ui/motion-wrapper";
+ 
+export const metadata: Metadata = {
+  title: "Syarat dan Ketentuan",
+  description: "Syarat dan ketentuan penggunaan website resmi Mahasiswa Jabodetabek Polindra.",
+};
  
  export default function TermsOfServicePage() {
    return (
@@ -13,8 +20,8 @@
  
        <Section className="bg-white">
          <Container>
-          <div className="max-w-2xl mx-auto">
-            <p className="text-sm text-gray-500 mb-8 text-center">
+           <Reveal><div className="max-w-2xl mx-auto">
+             <p className="text-sm text-gray-500 mb-8 text-center">
               Terakhir diperbarui: 22 Desember 2025
             </p>
 
@@ -93,9 +100,9 @@
                 </div>
               </div>
             </div>
-           </div>
-         </Container>
-       </Section>
+            </div></Reveal>
+          </Container>
+        </Section>
      </>
    );
  }
