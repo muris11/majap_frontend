@@ -11,7 +11,7 @@ import { Activity, Album, HeroSlide, Setting, TimelineEvent } from "@/types";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Beranda",
+  title: { absolute: "Mahasiswa Jabodetabek Polindra — Beranda" },
   description:
     "Portal resmi Mahasiswa Jabodetabek Polindra — organisasi mahasiswa Politeknik Negeri Indramayu. Informasi kegiatan, galeri, dan layanan organisasi terkini.",
   openGraph: {

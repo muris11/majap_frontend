@@ -18,8 +18,8 @@ const siteUrl = SITE.url;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    template: `%s | MAJAP Polindra`,
-    default: `MAJAP Polindra`,
+    template: `%s | Mahasiswa Jabodetabek Polindra`,
+    default: `Mahasiswa Jabodetabek Polindra`,
   },
   description: SITE.description,
   keywords: SITE.keywords,
