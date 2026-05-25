@@ -73,7 +73,7 @@ export default async function Home() {
   const { stats, timeline, heroSlides, aboutImage, activities, albums } = await getData();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col overflow-x-hidden">
       <HeroSection slides={heroSlides} />
       <Reveal><AboutPreview stats={stats ?? undefined} aboutImage={aboutImage} /></Reveal>
       <Reveal><TimelineSection events={timeline} /></Reveal>
