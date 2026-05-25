@@ -19,7 +19,7 @@ export function ExpandCards({ items }: ExpandCardsProps) {
   if (!items.length) return null;
 
   return (
-    <div className="w-full">
+    <div className="w-full overflow-x-auto no-scrollbar">
       <div className="flex items-center justify-center gap-1.5 md:gap-2">
         {items.map((item, idx) => {
           const isExpanded = idx === expandedIndex;
@@ -27,10 +27,10 @@ export function ExpandCards({ items }: ExpandCardsProps) {
             <button
               key={idx}
               type="button"
-              className="relative cursor-pointer overflow-hidden rounded-xl md:rounded-2xl transition-all duration-500 ease-in-out"
+              className="relative shrink-0 cursor-pointer overflow-hidden rounded-xl md:rounded-2xl transition-all duration-500 ease-in-out"
               style={{
-                width: isExpanded ? "24rem" : "5rem",
-                height: "20rem",
+                width: isExpanded ? "min(24rem, 70vw)" : "min(5rem, 20vw)",
+                height: isExpanded ? "min(20rem, 50vh)" : "min(20rem, 50vh)",
               }}
               onMouseEnter={() => setExpandedIndex(idx)}
               onClick={() => {

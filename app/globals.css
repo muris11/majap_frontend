@@ -52,10 +52,14 @@
 }
 
 @layer base {
-  :root {
-    --background: #ffffff;
-    --foreground: #1c1917;
-  }
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+html {
+  overflow-x: hidden;
+}
 
   body {
     @apply bg-background text-foreground antialiased;
@@ -224,6 +228,14 @@
 .reveal-delay-3.visible { animation-delay: 0.24s; }
 .reveal-delay-4.visible { animation-delay: 0.32s; }
 .reveal-delay-5.visible { animation-delay: 0.4s; }
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
