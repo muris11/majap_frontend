@@ -77,7 +77,7 @@ export function Navbar() {
                 Mahasiswa Jabodetabek
               </span>
               <span className={cn(
-                "text-[11px] font-medium uppercase tracking-wider transition-colors duration-300 whitespace-nowrap",
+                "text-[11px] font-medium uppercase tracking-wider transition-colors duration-300 truncate",
                 isOpen || scrolled || !hasDarkHeader ? "text-gray-500" : "text-white/75 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
               )}>
                 Politeknik Negeri Indramayu
