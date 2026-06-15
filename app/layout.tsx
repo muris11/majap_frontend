@@ -18,8 +18,8 @@ const siteUrl = SITE.url;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    template: `%s | Mahasiswa Jabodetabek Polindra`,
-    default: `Mahasiswa Jabodetabek Polindra`,
+    template: `%s | MAJAP - POLINDRA`,
+    default: `MAJAP - POLINDRA`,
   },
   description: SITE.description,
   keywords: SITE.keywords,
@@ -64,7 +64,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="scroll-smooth" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning>
       <body className={cn(fontSans.variable, "font-sans min-h-screen flex flex-col antialiased")}>
         <script
           type="application/ld+json"

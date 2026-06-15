@@ -1,9 +1,9 @@
 export const SITE = {
   name: "Mahasiswa Jabodetabek Polindra",
   shortName: "MAJAP",
-  domain: "majap.web.id",
-  url: "https://majap.web.id",
-  title: "Mahasiswa Jabodetabek Polindra",
+  domain: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).hostname : "majap.web.id",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://majap.web.id",
+  title: "MAJAP - POLINDRA",
   tagline: "Portal Resmi Mahasiswa Jabodetabek Politeknik Negeri Indramayu",
   description:
     "Portal resmi Mahasiswa Jabodetabek Politeknik Negeri Indramayu — organisasi mahasiswa Polindra yang berdomisili di wilayah Jabodetabek. Informasi kegiatan, galeri, dan layanan organisasi.",

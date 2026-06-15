@@ -72,7 +72,7 @@ export function AboutPreview({ stats, aboutImage }: AboutPreviewProps) {
           </div>
 
           <div className="lg:col-span-2 lg:justify-self-end w-full flex justify-center lg:justify-end">
-            {aboutImage ? (
+            {aboutImage && aboutImage.trim() !== "" ? (
               <div className="relative aspect-[3/4] w-full max-w-[420px] overflow-hidden rounded-2xl shadow-md ring-1 ring-black/5">
                 <ImageWithSkeleton
                   src={aboutImage}

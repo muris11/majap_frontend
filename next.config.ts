@@ -28,6 +28,10 @@ const nextConfig: NextConfig = {
         hostname: 'adminmajap.getmuris.my.id',
         pathname: '/storage/**',
       },
+      {
+        protocol: 'https',
+        hostname: process.env.NEXT_PUBLIC_R2_DOMAIN || '',
+      },
     ],
   },
 };

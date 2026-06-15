@@ -28,13 +28,18 @@ export function ImageWithSkeleton({
     setHasError(true);
   }, []);
 
-  if (hasError) {
+  const isSrcValid = typeof props.src === 'string' ? props.src.trim() !== '' : !!props.src;
+
+  if (hasError || !isSrcValid) {
     return (
       <div className={cn("relative flex h-full w-full items-center justify-center overflow-hidden rounded-xl border border-primary/10 bg-primary/5", containerClassName)}>
         <span className="text-xs font-medium text-primary/60">Gagal muat</span>
       </div>
     );
   }
+
+  // Ensure src is explicitly a string or valid Next.js image object to satisfy Next.js types
+  const finalSrc = typeof props.src === 'string' ? props.src : (props.src as any);
 
   return (
     <div className={cn("relative w-full h-full overflow-hidden", containerClassName)}>
@@ -50,6 +55,7 @@ export function ImageWithSkeleton({
       )}
       <Image
         {...props}
+        src={finalSrc}
         alt={alt}
         className={cn(
           "transition-all duration-500",
