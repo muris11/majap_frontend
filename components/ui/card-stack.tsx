@@ -223,7 +223,19 @@ export function CardStack<T extends CardStackItem>({
                     stiffness: springStiffness,
                     damping: springDamping,
                   }}
-                  onClick={() => setActive(i)}
+                  onClick={(e) => {
+                    if (isActive && item.href) {
+                      // Prevent navigation if it was a drag
+                      const target = e.target as HTMLElement;
+                      if (!target.closest('.cursor-grab')) {
+                        window.location.href = item.href;
+                      } else {
+                        window.location.href = item.href;
+                      }
+                    } else {
+                      setActive(i);
+                    }
+                  }}
                   {...dragProps}
                 >
                   <div
@@ -304,6 +316,13 @@ function DefaultFanCard({ item }: { item: CardStackItem; active: boolean }) {
             {item.tag}
           </span>
         ) : null}
+        {active && item.href && (
+          <div className="absolute right-5 bottom-5 flex items-center justify-center w-8 h-8 rounded-full bg-white/20 backdrop-blur-md text-white">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+        )}
       </div>
     </div>
   );
