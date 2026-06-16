@@ -21,7 +21,7 @@ export const CardCarousel: React.FC<CarouselProps> = ({
   images,
   autoplayDelay = 2000,
   showPagination = true,
-  showNavigation = true,
+  showNavigation = false,
   onImageClick,
 }) => {
   return (

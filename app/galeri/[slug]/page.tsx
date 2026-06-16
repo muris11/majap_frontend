@@ -99,7 +99,6 @@ export default async function AlbumDetailPage({ params }: Props) {
             <div className="flex items-center justify-between mb-8">
               <div>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/5 text-primary text-xs font-semibold mb-3">
-                  <span className="w-1 h-1 rounded-full bg-primary/30" />
                   Album Lainnya
                 </span>
                 <h2 className="text-xl md:text-2xl font-bold text-gray-900">
