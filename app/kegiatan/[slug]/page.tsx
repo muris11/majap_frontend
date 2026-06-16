@@ -61,7 +61,7 @@ export default async function ActivityDetailPage({ params }: Props) {
 
   return (
     <>
-      <Section className="bg-white !pt-40 md:!pt-52">
+      <Section className="bg-white !pt-28 md:!pt-36">
         <Container>
           <Reveal>
             <div className="space-y-12">
@@ -71,15 +71,15 @@ export default async function ActivityDetailPage({ params }: Props) {
                 {/* Left column (Main Content & Title) */}
                 <div className="lg:col-span-2 space-y-8">
                   
-                  {/* Left-aligned editorial heading inside the left section */}
-                  <div className="space-y-3">
+                  {/* Centered editorial heading inside the left section */}
+                  <div className="space-y-3 flex flex-col items-center text-center">
                     <span className="text-primary text-xs md:text-sm font-semibold tracking-[0.24em] uppercase">
                       Kegiatan Kami
                     </span>
                     <h1 className="text-3xl md:text-5xl font-black text-gray-900 tracking-tight leading-[1.05]">
                       {activity.title}
                     </h1>
-                    <div className="w-24 h-[3px] rounded-full bg-gradient-to-r from-primary to-secondary mt-1"></div>
+                    <div className="w-24 h-[3px] rounded-full bg-primary mt-1"></div>
                   </div>
 
                   {/* Activity Cover Image inside the left column, large aspect-[4/3] to make it big */}
@@ -96,7 +96,7 @@ export default async function ActivityDetailPage({ params }: Props) {
                   )}
 
                   {/* Metadata tags */}
-                  <div className="flex flex-wrap gap-6 text-sm font-medium text-gray-500 pb-6 border-b border-gray-100">
+                  <div className="flex flex-wrap justify-center gap-6 text-sm font-medium text-gray-500 pb-6 border-b border-gray-100">
                     <div className="flex items-center gap-2">
                       <Calendar className="text-primary" size={18} />
                       <span>{activity.event_date_formatted}</span>
@@ -120,7 +120,7 @@ export default async function ActivityDetailPage({ params }: Props) {
                   />
                   
                   {/* Kembali ke Daftar Kegiatan button at the bottom of the left column */}
-                  <div className="pt-8 border-t border-gray-100">
+                  <div className="pt-8 border-t border-gray-100 flex justify-center">
                     <Link 
                       href="/kegiatan"
                       className="inline-flex items-center px-6 py-3 rounded-full bg-gray-100 text-gray-700 font-bold hover:bg-primary hover:text-white transition-all duration-300"
