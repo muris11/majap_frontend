@@ -86,6 +86,14 @@ export function CardStack<T extends CardStackItem>({
     wrapIndex(initialIndex, len),
   );
   const [hovering, setHovering] = React.useState(false);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   React.useEffect(() => {
     setActive((a) => wrapIndex(a, len));
@@ -96,8 +104,13 @@ export function CardStack<T extends CardStackItem>({
     onChangeIndex?.(active, items[active]!);
   }, [active, onChangeIndex, items, len]);
 
+  const currentCardWidth = isMobile ? Math.min(cardWidth, 300) : cardWidth;
+  const currentCardHeight = isMobile ? Math.min(cardHeight, 220) : cardHeight;
+  const currentPerspective = isMobile ? 800 : perspectivePx;
+  const currentDepth = isMobile ? 100 : depthPx;
+
   const maxOffset = Math.max(0, Math.floor(maxVisible / 2));
-  const cardSpacing = Math.max(10, Math.round(cardWidth * (1 - overlap)));
+  const cardSpacing = Math.max(10, Math.round(currentCardWidth * (1 - overlap)));
   const stepDeg = maxOffset > 0 ? spreadDeg / maxOffset : 0;
 
   const canGoPrev = loop || active > 0;
@@ -154,7 +167,7 @@ export function CardStack<T extends CardStackItem>({
 
         <div
           className="absolute inset-0 flex items-end justify-center"
-          style={{ perspective: `${perspectivePx}px` }}
+          style={{ perspective: `${currentPerspective}px` }}
         >
           <AnimatePresence initial={false}>
             {items.map((item, i) => {
@@ -166,7 +179,7 @@ export function CardStack<T extends CardStackItem>({
               const rotateZ = off * stepDeg;
               const x = off * cardSpacing;
               const y = abs * 10;
-              const z = -abs * depthPx;
+              const z = -abs * currentDepth;
               const isActive = off === 0;
               const scale = isActive ? activeScale : inactiveScale;
               const lift = isActive ? -activeLiftPx : 0;
@@ -182,7 +195,7 @@ export function CardStack<T extends CardStackItem>({
                       if (reduceMotion) return;
                       const travel = info.offset.x;
                       const v = info.velocity.x;
-                      const threshold = Math.min(160, cardWidth * 0.22);
+                      const threshold = Math.min(160, currentCardWidth * 0.22);
                       if (travel > threshold || v > 650) prev();
                       else if (travel < -threshold || v < -650) next();
                     },
@@ -198,8 +211,8 @@ export function CardStack<T extends CardStackItem>({
                     isActive ? "cursor-grab active:cursor-grabbing" : "cursor-pointer",
                   )}
                   style={{
-                    width: cardWidth,
-                    height: cardHeight,
+                    width: currentCardWidth,
+                    height: currentCardHeight,
                     zIndex,
                     transformStyle: "preserve-3d",
                   }}

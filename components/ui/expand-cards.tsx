@@ -21,17 +21,16 @@ export function ExpandCards({ items }: ExpandCardsProps) {
   if (!items.length) return null;
 
   return (
-    <div className="w-full overflow-x-auto no-scrollbar">
-      <div className="flex items-center justify-center gap-1.5 md:gap-2">
+    <div className="w-full">
+      <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-2">
         {items.map((item, idx) => {
           const isExpanded = idx === expandedIndex;
           return (
             <div
               key={idx}
-              className="relative shrink-0 cursor-pointer overflow-hidden rounded-xl md:rounded-2xl transition-all duration-500 ease-in-out"
+              className="relative shrink-0 cursor-pointer overflow-hidden rounded-xl md:rounded-2xl transition-all duration-500 ease-in-out h-[12rem] md:h-[20rem]"
               style={{
-                width: isExpanded ? "min(24rem, 70vw)" : "min(5rem, 20vw)",
-                height: isExpanded ? "min(20rem, 50vh)" : "min(20rem, 50vh)",
+                width: isExpanded ? "min(24rem, 75vw)" : "min(4.5rem, 20vw)",
               }}
               onMouseEnter={() => setExpandedIndex(idx)}
               onClick={() => setExpandedIndex(idx)}

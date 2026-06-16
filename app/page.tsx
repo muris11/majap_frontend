@@ -45,7 +45,7 @@ async function getData(): Promise<{
     safeFetchJson(`${API_BASE_URL}/settings`, { next: { revalidate: 60 } }),
     safeFetchJson(`${API_BASE_URL}/timeline`, { next: { revalidate: 60 } }),
     safeFetchJson(`${API_BASE_URL}/hero-slides`, { cache: "no-store" }),
-    safeFetchJson(`${API_BASE_URL}/activities?limit=4`, { next: { revalidate: 60 } }),
+    safeFetchJson(`${API_BASE_URL}/activities?limit=8`, { next: { revalidate: 60 } }),
     safeFetchJson(`${API_BASE_URL}/albums?per_page=4`, { next: { revalidate: 60 } }),
   ]);
 
