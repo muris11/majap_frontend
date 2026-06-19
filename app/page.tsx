@@ -9,6 +9,19 @@ import { API_BASE_URL } from "@/lib/api";
 import { getImageUrl } from "@/lib/utils";
 import { Activity, Album, HeroSlide, Setting, TimelineEvent } from "@/types";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
+
+const DynamicActivitiesPreview = dynamic(() => import("@/components/home/activities-preview").then(m => m.ActivitiesPreview), {
+  loading: () => <div className="min-h-[500px] bg-gray-50 flex items-center justify-center animate-pulse">Loading Activities...</div>
+});
+
+const DynamicGalleryPreview = dynamic(() => import("@/components/home/gallery-preview").then(m => m.GalleryPreview), {
+  loading: () => <div className="min-h-[500px] bg-white flex items-center justify-center animate-pulse">Loading Gallery...</div>
+});
+
+const DynamicCtaWithGallery = dynamic(() => import("@/components/home/cta-with-gallery").then(m => m.CtaWithGallery), {
+  loading: () => <div className="min-h-[500px] bg-primary/10 flex items-center justify-center animate-pulse">Loading CTA...</div>
+});
 
 export const metadata: Metadata = {
   title: { absolute: "Mahasiswa Jabodetabek Politeknik Negeri Indramayu (MAJAP)" },
@@ -44,7 +57,7 @@ async function getData(): Promise<{
   const [settingsRaw, timelineRaw, heroSlidesRaw, activitiesRaw, albumsRaw] = await Promise.all([
     safeFetchJson(`${API_BASE_URL}/settings`, { next: { revalidate: 60 } }),
     safeFetchJson(`${API_BASE_URL}/timeline`, { next: { revalidate: 60 } }),
-    safeFetchJson(`${API_BASE_URL}/hero-slides`, { cache: "no-store" }),
+    safeFetchJson(`${API_BASE_URL}/hero-slides`, { next: { revalidate: 60 } }),
     safeFetchJson(`${API_BASE_URL}/activities?limit=8`, { next: { revalidate: 60 } }),
     safeFetchJson(`${API_BASE_URL}/albums?per_page=4`, { next: { revalidate: 60 } }),
   ]);
@@ -77,9 +90,15 @@ export default async function Home() {
       <HeroSection slides={heroSlides} />
       <Reveal><AboutPreview stats={stats ?? undefined} aboutImage={aboutImage} /></Reveal>
       <Reveal><TimelineSection events={timeline} /></Reveal>
-      <Reveal><ActivitiesPreview initialData={activities} /></Reveal>
-      <Reveal><GalleryPreview initialData={albums} /></Reveal>
-      <Reveal><CtaWithGallery images={[...activities, ...albums].map((a) => getImageUrl(a.cover_image)).filter(Boolean) as string[]} /></Reveal>
+      <Reveal><DynamicActivitiesPreview initialData={activities} /></Reveal>
+      <Reveal><DynamicGalleryPreview initialData={albums} /></Reveal>
+      <Reveal>
+        <DynamicCtaWithGallery 
+          images={[...activities, ...albums]
+            .filter((a) => Boolean(a.cover_image))
+            .map((a) => ({ src: getImageUrl(a.cover_image) as string, alt: a.title || "Gallery image" }))} 
+        />
+      </Reveal>
     </div>
   );
 }

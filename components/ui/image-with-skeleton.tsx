@@ -39,6 +39,7 @@ export function ImageWithSkeleton({
   }
 
   // Ensure src is explicitly a string or valid Next.js image object to satisfy Next.js types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const finalSrc = typeof props.src === 'string' ? props.src : (props.src as any);
 
   return (
@@ -57,6 +58,7 @@ export function ImageWithSkeleton({
         {...props}
         src={finalSrc}
         alt={alt}
+        sizes={props.sizes || "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"}
         className={cn(
           "transition-all duration-500",
           isLoading ? "opacity-0 scale-105" : "opacity-100 scale-100",

@@ -46,7 +46,7 @@ export function Navbar() {
   return (
     <header
       className={cn(
-        "fixed top-0 left-0 right-0 z-[100] transition-all duration-300",
+        "fixed top-0 left-0 right-0 z-[100] transition-colors duration-300",
         isOpen
           ? "bg-white py-[16px] shadow-lg shadow-black/5"
           : scrolled
@@ -58,7 +58,7 @@ export function Navbar() {
         <nav className="flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3 min-w-0 shrink">
             <div className={cn(
-              "relative shrink-0 transition-all duration-300",
+              "relative shrink-0 transition-transform duration-300",
               isOpen || scrolled ? "w-11 h-11" : "w-14 h-14"
             )}>
               <Image
@@ -148,7 +148,7 @@ export function Navbar() {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
             className="overflow-hidden lg:hidden"
           >
             <div className="px-4 md:px-6 lg:px-8 pb-6 pt-2">
@@ -156,12 +156,7 @@ export function Navbar() {
                 {navItems.map((item, i) => {
                   const active = isActive(pathname, item.href);
                   return (
-                    <motion.div
-                      key={item.href}
-                      initial={{ opacity: 0, x: -12 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.25, delay: i * 0.04 }}
-                    >
+                    <div key={item.href}>
                       <Link
                         href={item.href}
                         className={cn(
@@ -176,7 +171,7 @@ export function Navbar() {
                         )}
                         {item.name}
                       </Link>
-                    </motion.div>
+                    </div>
                   );
                 })}
               </div>

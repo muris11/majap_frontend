@@ -35,7 +35,7 @@ interface UseLiveDataResult<T> {
 
 // Store versions globally to share across hooks
 let globalVersions: CacheVersions | null = null;
-let versionListeners: Set<() => void> = new Set();
+const versionListeners: Set<() => void> = new Set();
 let pollingInterval: ReturnType<typeof setInterval> | null = null;
 
 async function fetchVersions(): Promise<CacheVersions> {

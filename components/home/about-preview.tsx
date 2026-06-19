@@ -80,6 +80,8 @@ export function AboutPreview({ stats, aboutImage }: AboutPreviewProps) {
                   fill
                   className="object-cover"
                   sizes="(max-width: 1024px) 100vw, 40vw"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             ) : (

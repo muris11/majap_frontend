@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { EnumSchema, FormSchema, NavigationSchema, TableSchema } from "@/types/schema";
 import { getCachedSchema, schemaApi } from "../schema";
 
@@ -133,15 +133,25 @@ export function useNavigation() {
 export function usePermission(permission: string) {
   const [hasPermission, setHasPermission] = useState(false);
 
-  const checkPermission = useCallback(async () => {
+  useEffect(() => {
     // This would typically check against user permissions from auth context
     // For now, return false as placeholder
-    setHasPermission(false);
-  }, [permission]);
-
-  useEffect(() => {
+    let cancelled = false;
+    
+    const checkPermission = async () => {
+      // Simulate async permission check
+      await new Promise(resolve => setTimeout(resolve, 0));
+      if (!cancelled) {
+        setHasPermission(false);
+      }
+    };
+    
     checkPermission();
-  }, [checkPermission]);
+    
+    return () => {
+      cancelled = true;
+    };
+  }, [permission]);
 
   return hasPermission;
 }

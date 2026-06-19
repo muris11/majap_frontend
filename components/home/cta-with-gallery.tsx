@@ -6,6 +6,7 @@ import Link from "next/link"
 import { Container } from "@/components/ui/container"
 import { Section } from "@/components/ui/section"
 import { Button } from "@/components/ui/button"
+import Image from "next/image"
 
 const SPRING_CONFIG = {
   type: "spring" as const,
@@ -48,15 +49,24 @@ const GRID_CONFIGS: Record<number, { classes: string[]; rows: string }> = {
   },
 }
 
-interface CtaWithGalleryProps {
-  images?: string[]
+export interface GalleryImage {
+  src: string;
+  alt?: string;
 }
 
-export function CtaWithGallery({ images: imageUrls }: CtaWithGalleryProps) {
-  const count = imageUrls?.length ?? 0
+interface CtaWithGalleryProps {
+  images?: (string | GalleryImage)[]
+}
+
+export function CtaWithGallery({ images: inputImages }: CtaWithGalleryProps) {
+  const parsedImages: GalleryImage[] = (inputImages || []).map(img => 
+    typeof img === 'string' ? { src: img, alt: "" } : img
+  )
+
+  const count = parsedImages.length
   const config = GRID_CONFIGS[count] || GRID_CONFIGS[4]
 
-  const gridImages = count > 0 ? imageUrls!.slice(0, Math.min(count, 4)) : []
+  const gridImages = count > 0 ? parsedImages.slice(0, Math.min(count, 4)) : []
 
   return (
     <Section className="bg-white">
@@ -122,7 +132,7 @@ export function CtaWithGallery({ images: imageUrls }: CtaWithGalleryProps) {
 
           <div className={`lg:col-span-2 grid grid-cols-2 gap-4 ${config.rows}`}>
             {count > 0 ? (
-              gridImages.map((url, index) => {
+              gridImages.map((img, index) => {
                 const cls = config.classes[index]
                 return (
                   <motion.div
@@ -133,10 +143,14 @@ export function CtaWithGallery({ images: imageUrls }: CtaWithGalleryProps) {
                     transition={{ duration: 0.4, delay: index * 0.15 }}
                     className={cls ? `relative overflow-hidden rounded-xl shadow-lg ${cls}` : "relative overflow-hidden rounded-xl shadow-lg col-span-1 row-span-1"}
                   >
-                    <img
-                      className="size-full object-cover object-center"
-                      src={url}
-                      alt=""
+                    <Image
+                      className="object-cover object-center"
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 33vw"
+                      src={img.src}
+                      alt={img.alt || ""}
+                      loading="lazy"
+                      decoding="async"
                     />
                   </motion.div>
                 )

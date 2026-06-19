@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowUpRight } from "lucide-react";
 
 interface ExpandCard {
@@ -35,10 +36,14 @@ export function ExpandCards({ items }: ExpandCardsProps) {
               onMouseEnter={() => setExpandedIndex(idx)}
               onClick={() => setExpandedIndex(idx)}
             >
-              <img
-                className="w-full h-full object-cover"
+              <Image
+                className="object-cover"
+                fill
+                sizes="(max-width: 768px) 75vw, 24rem"
                 src={item.image}
                 alt={item.title}
+                loading="lazy"
+                decoding="async"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
               <div

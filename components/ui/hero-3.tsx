@@ -3,8 +3,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
+import Image from "next/image";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
+
+export interface HeroImage {
+  src: string;
+  alt?: string;
+}
 
 interface AnimatedMarqueeHeroProps {
   tagline: string;
@@ -14,7 +20,7 @@ interface AnimatedMarqueeHeroProps {
   ctaHref: string;
   secondaryCtaText?: string;
   secondaryCtaHref?: string;
-  images: string[];
+  images: (string | HeroImage)[];
   className?: string;
 }
 
@@ -36,7 +42,12 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
 }) => {
   const [duration, setDuration] = React.useState(60);
   const [activeImageIndex, setActiveImageIndex] = React.useState(0);
-  const supportingImages = images.length > 1 ? images : [...images, ...images, ...images];
+  
+  const parsedImages: HeroImage[] = images.map(img => 
+    typeof img === 'string' ? { src: img, alt: "" } : img
+  );
+  
+  const supportingImages = parsedImages.length > 1 ? parsedImages : [...parsedImages, ...parsedImages, ...parsedImages];
   const marqueeGroups = [0, 1, 2, 3];
 
   React.useEffect(() => {
@@ -52,11 +63,11 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
     if (images.length <= 1) return;
 
     const timer = window.setInterval(() => {
-      setActiveImageIndex((current) => (current + 1) % images.length);
+      setActiveImageIndex((current) => (current + 1) % parsedImages.length);
     }, 10000);
 
     return () => window.clearInterval(timer);
-  }, [images]);
+  }, [parsedImages.length, images.length]);
 
   return (
     <section
@@ -65,15 +76,17 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
         className
       )}
     >
-      {images.length > 0 ? (
+      {parsedImages.length > 0 ? (
         <div className="absolute inset-0">
-          {images.map((src, index) => (
-            <img
-              key={`${src}-${index}`}
-              src={src}
-              alt=""
+          {parsedImages.map((img, index) => (
+            <Image
+              key={`${img.src}-${index}`}
+              src={img.src}
+              alt={img.alt || ""}
+              fill
+              priority={index === 0}
               className={cn(
-                "absolute inset-0 h-full w-full object-cover object-center transition-opacity duration-1000 ease-out",
+                "object-cover object-center transition-opacity duration-1000 ease-out",
                 index === activeImageIndex ? "opacity-100" : "opacity-0"
               )}
             />
@@ -140,7 +153,7 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
         </motion.div>
       </div>
 
-      {images.length > 0 ? (
+      {parsedImages.length > 0 ? (
         <div className="absolute inset-x-0 bottom-10 z-[3] overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)] md:bottom-12">
           <motion.div
             className="flex w-max items-center"
@@ -151,13 +164,18 @@ export const AnimatedMarqueeHero: React.FC<AnimatedMarqueeHeroProps> = ({
           >
             {marqueeGroups.map((group) => (
               <div key={group} className="flex items-center gap-4 pr-4 md:gap-5 md:pr-5">
-                {supportingImages.map((src, index) => (
-                  <img
-                    key={`${group}-${index}`}
-                    src={src}
-                    alt=""
-                    className="h-24 w-36 flex-shrink-0 rounded-xl border border-white/20 object-cover object-center shadow-2xl shadow-black/35 md:h-32 md:w-52"
-                  />
+                {supportingImages.map((img, index) => (
+                  <div key={`${group}-${index}`} className="relative h-24 w-36 flex-shrink-0 md:h-32 md:w-52">
+                    <Image
+                      src={img.src}
+                      alt={img.alt || ""}
+                      fill
+                      sizes="(min-width: 768px) 13rem, 9rem"
+                      className="rounded-xl border border-white/20 object-cover object-center shadow-2xl shadow-black/35"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
                 ))}
               </div>
             ))}

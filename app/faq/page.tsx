@@ -1,6 +1,5 @@
 "use client";
 
-import { PageHeader } from "@/components/layout/page-header";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { SectionHeading } from "@/components/ui/section-heading";
@@ -36,6 +35,7 @@ export default function FaqPage() {
       <Section className="bg-gray-50 !pt-36 md:!pt-48">
         <Container>
           <SectionHeading
+            as="h1"
             tag="FAQ"
             title="Pertanyaan Umum"
             description="Temukan jawaban atas pertanyaan yang sering diajukan tentang keluarga besar MAJAP Polindra."

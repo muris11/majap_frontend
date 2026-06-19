@@ -6,9 +6,10 @@ interface SectionHeadingProps {
   description?: string;
   center?: boolean;
   className?: string;
+  as?: "h1" | "h2" | "h3";
 }
 
-export function SectionHeading({ tag, title, description, center, className }: SectionHeadingProps) {
+export function SectionHeading({ tag, title, description, center, className, as: Component = "h2" }: SectionHeadingProps) {
   return (
     <div className={cn(
       "mb-10 md:mb-14",
@@ -27,9 +28,9 @@ export function SectionHeading({ tag, title, description, center, className }: S
           <span className="h-px w-10 bg-primary/45" />
         </div>
       )}
-      <h2 className="mt-4 text-3xl md:text-5xl font-black text-gray-900 tracking-tight leading-[0.95]">
+      <Component className="mt-4 text-3xl md:text-5xl font-black text-gray-900 tracking-tight leading-[0.95]">
         {title}
-      </h2>
+      </Component>
       {description && (
         <p className={cn(
           "mt-5 text-base md:text-lg text-gray-600 leading-relaxed",

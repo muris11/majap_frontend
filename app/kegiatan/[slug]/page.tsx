@@ -10,6 +10,7 @@ import { ImageWithSkeleton } from "@/components/ui/image-with-skeleton";
 import { Reveal } from "@/components/ui/motion-wrapper";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -59,8 +60,15 @@ export default async function ActivityDetailPage({ params }: Props) {
 
   const photos = album?.photos || [];
 
+  const breadcrumbItems = [
+    { name: "Beranda", url: "/" },
+    { name: "Kegiatan", url: "/kegiatan" },
+    { name: activity.title, url: `/kegiatan/${activity.slug}` },
+  ];
+
   return (
     <>
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <Section className="bg-white !pt-28 md:!pt-36">
         <Container>
           <Reveal>

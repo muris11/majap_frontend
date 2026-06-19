@@ -110,6 +110,7 @@ export const CardCarousel: React.FC<CarouselProps> = ({
             : false
         }
         modules={[EffectCoverflow, Autoplay, Pagination, Navigation]}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         onTap={(swiper: any) => {
           const slide = swiper.clickedSlide;
           if (slide) {
@@ -130,6 +131,8 @@ export const CardCarousel: React.FC<CarouselProps> = ({
                   className="object-cover"
                   alt={image.alt}
                   sizes="(max-width: 768px) 280px, (max-width: 1024px) 380px, 450px"
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
             </div>

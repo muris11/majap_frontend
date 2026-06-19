@@ -3,6 +3,7 @@
   import { X, ChevronLeft, ChevronRight } from "lucide-react";
   import { useCallback, useEffect, useState } from "react";
   import { createPortal } from "react-dom";
+  import Image from "next/image";
   
   interface LightboxProps {
     images: { src: string; caption?: string | null }[];
@@ -83,11 +84,17 @@
         className="relative w-full h-full flex items-center justify-center p-4 md:p-12 cursor-default"
           onClick={(e) => e.stopPropagation()}
         >
-          <img
-            src={currentImage.src}
-            alt={currentImage.caption || "Photo"}
-           className="max-w-full max-h-full object-contain shadow-2xl rounded-sm"
-          />
+          <div className="relative w-full h-full flex items-center justify-center">
+            <Image
+              src={currentImage.src}
+              alt={currentImage.caption || "Photo"}
+             className="object-contain shadow-2xl rounded-sm"
+             fill
+             sizes="100vw"
+             loading="lazy"
+             decoding="async"
+            />
+          </div>
          
          {/* Caption Overlay */}
          <div className="absolute bottom-8 left-0 right-0 text-center pointer-events-none">

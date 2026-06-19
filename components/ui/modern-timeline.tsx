@@ -5,6 +5,7 @@ import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Card, CardContent } from "@/components/ui/card"
 import { Calendar } from "lucide-react"
+import Image from "next/image"
 
 export interface TimelineItem {
   title: string
@@ -64,11 +65,15 @@ export function Timeline({ items, className }: TimelineProps) {
                     <div className="flex items-start gap-4">
                       {item.image && (
                         <div className="hidden sm:block shrink-0">
-                          <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-gray-100">
-                            <img
+                          <div className="w-12 h-12 rounded-full overflow-hidden ring-2 ring-gray-100 relative">
+                            <Image
                               src={item.image}
                               alt=""
-                              className="w-full h-full object-cover"
+                              fill
+                              sizes="48px"
+                              className="object-cover"
+                              loading="lazy"
+                              decoding="async"
                             />
                           </div>
                         </div>

@@ -37,6 +37,7 @@ async function fetchApi<T>(endpoint: string, options?: RequestInit): Promise<T> 
         "Accept": "application/json",
         ...options?.headers,
       },
+      next: { revalidate: options?.next?.revalidate ?? 3600 }
     });
 
     if (!res.ok) {

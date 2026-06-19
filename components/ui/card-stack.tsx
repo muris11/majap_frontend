@@ -4,6 +4,8 @@ import * as React from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import Link from "next/link";
 
+import Image from "next/image";
+
 function cn(...classes: Array<string | undefined | null | false>) {
   return classes.filter(Boolean).join(" ");
 }
@@ -191,6 +193,7 @@ export function CardStack<T extends CardStackItem>({
                     drag: "x" as const,
                     dragConstraints: { left: 0, right: 0 },
                     dragElastic: 0.18,
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     onDragEnd: (_e: any, info: { offset: { x: number }; velocity: { x: number } }) => {
                       if (reduceMotion) return;
                       const travel = info.offset.x;
@@ -292,12 +295,15 @@ function DefaultFanCard({ item, active }: { item: CardStackItem; active: boolean
     <div className="relative h-full w-full">
       <div className="absolute inset-0">
         {item.imageSrc ? (
-          <img
+          <Image
             src={item.imageSrc}
             alt={item.title}
-            className="h-full w-full object-cover"
+            fill
+            className="object-cover"
             draggable={false}
-            loading="eager"
+            loading="lazy"
+            decoding="async"
+            sizes="(max-width: 768px) 300px, 520px"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gray-100 text-sm text-gray-400">

@@ -1,26 +1,29 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function NavigationProgress() {
   const pathname = usePathname();
   const [isNavigating, setIsNavigating] = useState(false);
-  const prevPathname = useRef(pathname);
+  const [prevPathname, setPrevPathname] = useState(pathname);
+
+  // Derive state from props instead of useEffect to prevent cascading render
+  if (prevPathname !== pathname) {
+    setIsNavigating(true);
+    setPrevPathname(pathname);
+  }
 
   useEffect(() => {
-    if (prevPathname.current !== pathname) {
-      setIsNavigating(true);
-      prevPathname.current = pathname;
-      
+    if (isNavigating) {
       const timer = setTimeout(() => {
         setIsNavigating(false);
       }, 400);
 
       return () => clearTimeout(timer);
     }
-  }, [pathname]);
+  }, [isNavigating]);
 
   return (
     <AnimatePresence>

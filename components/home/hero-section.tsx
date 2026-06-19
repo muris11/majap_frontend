@@ -21,6 +21,13 @@ function areSameSlides(current: HeroSlide[], next: HeroSlide[]) {
 export function HeroSection({ slides = [] }: HeroSectionProps) {
   const [liveSlides, setLiveSlides] = useState<HeroSlide[]>(slides);
 
+  // Sync prop changes manually during render to avoid cascading updates
+  const [prevSlidesProp, setPrevSlidesProp] = useState(slides);
+  if (!areSameSlides(prevSlidesProp, slides)) {
+    setPrevSlidesProp(slides);
+    setLiveSlides(slides);
+  }
+
   useEffect(() => {
     let isMounted = true;
 
@@ -45,14 +52,8 @@ export function HeroSection({ slides = [] }: HeroSectionProps) {
     };
   }, []);
 
-  useEffect(() => {
-    setLiveSlides((currentSlides) =>
-      areSameSlides(currentSlides, slides) ? currentSlides : slides
-    );
-  }, [slides]);
-
   const images = useMemo(
-    () => liveSlides.map((s) => s.image).filter(Boolean),
+    () => liveSlides.filter((s) => Boolean(s.image)).map((s) => ({ src: s.image, alt: "MAJAP Polindra" })),
     [liveSlides]
   );
 

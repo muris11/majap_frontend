@@ -8,7 +8,9 @@ import { getImageUrl } from "@/lib/utils";
 import { SITE } from "@/lib/seo";
 import { ArrowLeft, Camera } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
+import { BreadcrumbJsonLd } from "@/components/seo/json-ld";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -58,9 +60,16 @@ export default async function AlbumDetailPage({ params }: Props) {
     src: getImageUrl(photo.image_path) || "",
     alt: photo.caption || "Photo",
   }));
+  
+  const breadcrumbItems = [
+    { name: "Beranda", url: "/" },
+    { name: "Galeri", url: "/galeri" },
+    { name: album.title, url: `/galeri/${album.slug}` },
+  ];
 
   return (
     <>
+      <BreadcrumbJsonLd items={breadcrumbItems} />
       <PageHeader
         title={album.title}
         description={album.description || undefined}
@@ -119,10 +128,14 @@ export default async function AlbumDetailPage({ params }: Props) {
                   <div className="aspect-square rounded-xl bg-gray-100 overflow-hidden relative shadow-sm ring-1 ring-black/5 group-hover:shadow-lg group-hover:ring-primary/20 transition-all duration-400">
                     {item.cover_image ? (
                       <div className="absolute inset-0">
-                        <img
+                        <Image
                           src={getImageUrl(item.cover_image) || ""}
                           alt={item.title}
-                          className="w-full h-full object-cover transition-transform duration-400 group-hover:scale-105"
+                          fill
+                          sizes="(max-width: 768px) 50vw, 25vw"
+                          className="object-cover transition-transform duration-400 group-hover:scale-105"
+                          loading="lazy"
+                          decoding="async"
                         />
                       </div>
                     ) : (
